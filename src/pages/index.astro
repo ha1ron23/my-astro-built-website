@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>ha1ron // portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at 20% 30%, #0a0c12, #030507);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      padding: 1.5rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .noise-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0.08;
+      background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJmIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjciIG51bU9jdGF2ZXM9IjMiLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjZikiIG9wYWNpdHk9IjAuNCIvPjwvc3ZnPg==');
+      background-repeat: repeat;
+    }
+
+    .animated-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(125deg, 
+        rgba(15, 25, 45, 0.9), 
+        rgba(30, 20, 45, 0.8), 
+        rgba(10, 20, 40, 0.95));
+      background-size: 200% 200%;
+      animation: gradientFlow 18s ease infinite;
+      z-index: -3;
+    }
+
+    @keyframes gradientFlow {
+      0% { background-position: 0% 0%; }
+      50% { background-position: 100% 100%; }
+      100% { background-position: 0% 0%; }
+    }
+
+    .particles-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -2;
+      overflow: hidden;
+    }
+
+    .card {
+      max-width: 560px;
+      width: 100%;
+      background: rgba(18, 22, 32, 0.65);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 2.5rem;
+      border: 1px solid rgba(98, 114, 164, 0.35);
+      box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.6), 0 0 0 0.5px rgba(255, 255, 255, 0.05) inset;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      z-index: 2;
+      animation: cardFloat 5s infinite alternate ease-in-out, fadeInUp 0.8s ease-out forwards;
+      opacity: 0;
+      transform: translateY(30px);
+      will-change: transform, opacity;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card {
+      transition: transform 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 32px 55px -18px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(131, 152, 217, 0.25) inset;
+    }
+
+    @keyframes cardFloat {
+      0% { transform: translateY(0px); }
+      100% { transform: translateY(-6px); }
+    }
+
+    .card-content {
+      padding: 2rem 2rem 2rem 2rem;
+    }
+
+    .handle {
+      font-size: 1.9rem;
+      font-weight: 650;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #E9F1FF 0%, #B7C9F0 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 1.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 2px solid rgba(120, 150, 220, 0.5);
+      padding-bottom: 6px;
+    }
+
+    .handle i {
+      background: none;
+      color: #9bb6f0;
+      font-size: 1.6rem;
+    }
+
+    .info-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+      margin: 1.6rem 0 2rem 0;
+    }
+
+    .info-row {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: nowrap;
+      gap: 1rem;
+      font-size: 1rem;
+      border-bottom: 1px dashed rgba(148, 163, 184, 0.25);
+      padding-bottom: 0.7rem;
+    }
+
+    .info-label {
+      font-weight: 600;
+      min-width: 110px;
+      color: #a9bbdf;
+      letter-spacing: 0.3px;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      background: rgba(65, 85, 125, 0.25);
+      padding: 0.2rem 0.7rem;
+      border-radius: 60px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .info-label i {
+      font-size: 0.8rem;
+      color: #7b9ef0;
+    }
+
+    .info-value {
+      color: #eef3ff;
+      font-weight: 470;
+      letter-spacing: -0.2px;
+      word-break: keep-all;
+      flex: 1;
+      min-width: 0;
+      overflow-x: auto;
+    }
+
+    .music-badge {
+      background: linear-gradient(115deg, #281e3f, #1b1a2e);
+      padding: 0.4rem 1rem;
+      border-radius: 60px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 550;
+      font-size: 1rem;
+      border: 1px solid #6a5e8a;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .music-badge:hover {
+      border-color: #8b7cb0;
+      box-shadow: 0 0 6px rgba(107, 94, 138, 0.5);
+    }
+
+    .music-badge i {
+      font-size: 1rem;
+      color: #7b9ef0;
+    }
+
+    .music-text {
+      color: rgba(198, 218, 255, 0.85);
+      font-weight: 500;
+      letter-spacing: 0.2px;
+      white-space: nowrap;
+    }
+
+    .social-links {
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      border-top: 1px solid rgba(110, 130, 180, 0.35);
+      padding-top: 1.6rem;
+    }
+
+    .social-icons {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 1.2rem;
+    }
+
+    .social-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      background: rgba(20, 25, 40, 0.6);
+      padding: 6px 12px;
+      border-radius: 40px;
+      color: #b9ceff;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .social-item i {
+      font-size: 1rem;
+      width: 1.2rem;
+      color: #90abf0;
+      transition: transform 0.2s ease;
+    }
+
+    .social-item span {
+      font-weight: 470;
+    }
+
+    .social-item:hover {
+      background: rgba(45, 55, 85, 0.7);
+      transform: translateY(-2px);
+    }
+
+    .social-item:hover i {
+      transform: translateY(-2px) rotate(3deg);
+      color: #bbd4ff;
+    }
+
+    .social-item:active {
+      transform: scale(0.96);
+    }
+
+    /* Убираем стандартный активный стиль, управляем через JS класс */
+    .social-item.active-pressed {
+      transform: scale(0.96);
+    }
+
+    .github-btn {
+      background: linear-gradient(100deg, #1f2b46, #111827);
+      border: 1px solid #3b4b7a;
+      padding: 0.9rem 1.5rem;
+      border-radius: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      font-weight: 600;
+      font-size: 1rem;
+      color: white;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      letter-spacing: -0.2px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .github-btn i {
+      font-size: 1.2rem;
+      color: #f0f3ff;
+      transition: transform 0.2s;
+    }
+
+    .github-btn:hover {
+      background: linear-gradient(100deg, #2a3b60, #192036);
+      border-color: #6e88c0;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .github-btn:hover i {
+      transform: translateX(2px);
+    }
+
+    .github-btn.active-pressed {
+      transform: scale(0.97);
+    }
+
+    .footer-note {
+      margin-top: 1rem;
+      text-align: center;
+      font-size: 0.7rem;
+      color: rgba(169, 187, 223, 0.5);
+      letter-spacing: 0.5px;
+      font-family: monospace;
+    }
+
+    @media (max-width: 550px) {
+      .card-content {
+        padding: 1.5rem;
+      }
+      .handle {
+        font-size: 1.6rem;
+      }
+      .info-label {
+        min-width: 85px;
+        font-size: 0.75rem;
+      }
+      .info-value {
+        overflow-x: auto;
+      }
+      .music-badge {
+        white-space: nowrap;
+        overflow-x: auto;
+        max-width: 100%;
+      }
+      .info-row {
+        flex-wrap: nowrap;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="animated-bg"></div>
+  <div class="noise-overlay"></div>
+  <div class="particles-container" id="particlesContainer"></div>
+
+  <div class="card" id="parallaxCard">
+    <div class="card-content">
+      <div class="handle">
+        <i class="fas fa-at"></i> hairon-reallife
+      </div>
+
+      <div class="info-grid">
+        <div class="info-row">
+          <div class="info-label"><i class="fas fa-cake-candles"></i> Birthday</div>
+          <div class="info-value">March 13th</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label"><i class="fas fa-laptop-code"></i> Hobby</div>
+          <div class="info-value">Programming</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label"><i class="fas fa-map-marker-alt"></i> Origin</div>
+          <div class="info-value">Russia</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label"><i class="fas fa-headphones"></i> Fav. Music</div>
+          <div class="info-value">
+            <div class="music-badge">
+              <i class="fas fa-hashtag"></i>
+              <span class="music-text">from-june-lu</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="social-links">
+        <div class="social-icons">
+          <a href="https://t.me/gentulinuxuser" target="_blank" rel="noopener noreferrer" class="social-item">
+            <i class="fab fa-telegram"></i>
+            <span>@gentulinuxuser</span>
+          </a>
+          <a href="https://discord.com/users/799693749429076009" target="_blank" rel="noopener noreferrer" class="social-item">
+            <i class="fab fa-discord"></i>
+            <span>gentoolinux.user</span>
+          </a>
+          <div class="social-item">
+            <i class="fas fa-location-dot"></i>
+            <span>Moscow, RU</span>
+          </div>
+        </div>
+        <a href="https://github.com/ha1ron23" target="_blank" rel="noopener noreferrer" class="github-btn">
+          <i class="fab fa-github"></i> GitHub Profile
+          <i class="fas fa-arrow-up-right-from-squares"></i>
+        </a>
+        <div class="footer-note">Last updated: <span id="liveDate"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // Живая дата
+      const dateSpan = document.getElementById('liveDate');
+      if (dateSpan) {
+        const now = new Date();
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        dateSpan.textContent = now.toLocaleDateString('en-US', options);
+      }
+
+      // Частицы
+      const container = document.getElementById('particlesContainer');
+      if (container) {
+        const PARTICLE_COUNT = 30;
+        function createParticle() {
+          const particle = document.createElement('div');
+          const size = Math.random() * 6 + 2;
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+          particle.style.position = 'absolute';
+          particle.style.borderRadius = '50%';
+          particle.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
+          particle.style.opacity = Math.random() * 0.4 + 0.2;
+          particle.style.boxShadow = '0 0 2px rgba(255,255,240,0.3)';
+          
+          const left = Math.random() * 100;
+          const duration = Math.random() * 8 + 6;
+          const delay = Math.random() * -15;
+          
+          particle.style.left = `${left}%`;
+          particle.style.animation = `fall ${duration}s linear infinite`;
+          particle.style.animationDelay = `${delay}s`;
+          
+          return particle;
+        }
+
+        const styleSheet = document.createElement("style");
+        styleSheet.textContent = `
+          @keyframes fall {
+            0% {
+              transform: translateY(-10vh) translateX(0);
+              opacity: 0;
+            }
+            15% {
+              opacity: 0.7;
+            }
+            85% {
+              opacity: 0.7;
+            }
+            100% {
+              transform: translateY(110vh) translateX(calc(-10px + 20px * var(--rand))) rotate(10deg);
+              opacity: 0;
+            }
+          }
+        `;
+        document.head.appendChild(styleSheet);
+        
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
+          const p = createParticle();
+          const randX = Math.random();
+          p.style.setProperty('--rand', randX);
+          container.appendChild(p);
+        }
+      }
+
+      // Параллакс
+      const card = document.getElementById('parallaxCard');
+      if (card) {
+        const handleMouseMove = (e) => {
+          const rect = card.getBoundingClientRect();
+          const centerX = rect.left + rect.width / 2;
+          const centerY = rect.top + rect.height / 2;
+          const deltaX = (e.clientX - centerX) / 35;
+          const deltaY = (e.clientY - centerY) / 35;
+          const rotateY = deltaX;
+          const rotateX = -deltaY;
+          card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+        };
+        const handleMouseLeave = () => {
+          card.style.transform = '';
+        };
+        document.body.addEventListener('mousemove', handleMouseMove);
+        card.addEventListener('mouseleave', handleMouseLeave);
+      }
+
+      // ИСПРАВЛЕНИЕ БАГА С "ЗАЛИПШИМ" ACTIVE ПРИ ПЕРЕТАСКИВАНИИ
+      const interactiveElements = document.querySelectorAll('.social-item, .github-btn');
+      
+      function removePressedState(e) {
+        const el = e?.target?.closest?.('.social-item, .github-btn');
+        if (el) {
+          el.classList.remove('active-pressed');
+        } else {
+          // Убираем у всех на всякий случай
+          document.querySelectorAll('.social-item, .github-btn').forEach(btn => {
+            btn.classList.remove('active-pressed');
+          });
+        }
+      }
+      
+      function addPressedState(e) {
+        const el = e.target.closest('.social-item, .github-btn');
+        if (el) {
+          el.classList.add('active-pressed');
+          // Добавляем глобальные обработчики для отпускания мыши где угодно и выхода за пределы
+          const cleanup = () => {
+            el.classList.remove('active-pressed');
+            document.removeEventListener('mouseup', cleanup);
+            document.removeEventListener('dragend', cleanup);
+            el.removeEventListener('mouseleave', onMouseLeave);
+          };
+          const onMouseLeave = () => {
+            el.classList.remove('active-pressed');
+            document.removeEventListener('mouseup', cleanup);
+            document.removeEventListener('dragend', cleanup);
+            el.removeEventListener('mouseleave', onMouseLeave);
+          };
+          document.addEventListener('mouseup', cleanup);
+          document.addEventListener('dragend', cleanup);
+          el.addEventListener('mouseleave', onMouseLeave);
+        }
+      }
+      
+      interactiveElements.forEach(el => {
+        // Отключаем стандартный :active стиль, управляем через класс
+        el.addEventListener('mousedown', addPressedState);
+        // Также отлавливаем потерю захвата окна (blur) для надёжности
+        window.addEventListener('blur', removePressedState);
+      });
+      // Глобальный сброс при клике где угодно (для подстраховки)
+      document.body.addEventListener('click', removePressedState);
+    })();
+  </script>
+</body>
+</html>
