@@ -272,7 +272,6 @@
       transform: scale(0.96);
     }
 
-    /* Убираем стандартный активный стиль, управляем через JS класс */
     .social-item.active-pressed {
       transform: scale(0.96);
     }
@@ -328,6 +327,17 @@
       font-family: monospace;
     }
 
+    .copyright {
+      margin-top: 1.5rem;
+      text-align: center;
+      font-size: 0.65rem;
+      color: rgba(169, 187, 223, 0.4);
+      font-family: monospace;
+      letter-spacing: 0.3px;
+      border-top: 1px solid rgba(110, 130, 180, 0.2);
+      padding-top: 1rem;
+    }
+
     @media (max-width: 550px) {
       .card-content {
         padding: 1.5rem;
@@ -361,7 +371,7 @@
   <div class="card" id="parallaxCard">
     <div class="card-content">
       <div class="handle">
-        <i class="fas fa-at"></i> hairon-reallife
+        <i class="fas fa-at"></i> hairon@reallife
       </div>
 
       <div class="info-grid">
@@ -408,13 +418,13 @@
           <i class="fas fa-arrow-up-right-from-squares"></i>
         </a>
         <div class="footer-note">Last updated: <span id="liveDate"></span></div>
+        <div class="copyright">Copyright (c) 2026 ha1ron23. Licensed under MIT License.</div>
       </div>
     </div>
   </div>
 
   <script>
     (function() {
-      // Живая дата
       const dateSpan = document.getElementById('liveDate');
       if (dateSpan) {
         const now = new Date();
@@ -422,7 +432,6 @@
         dateSpan.textContent = now.toLocaleDateString('en-US', options);
       }
 
-      // Частицы
       const container = document.getElementById('particlesContainer');
       if (container) {
         const PARTICLE_COUNT = 30;
@@ -436,15 +445,12 @@
           particle.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
           particle.style.opacity = Math.random() * 0.4 + 0.2;
           particle.style.boxShadow = '0 0 2px rgba(255,255,240,0.3)';
-          
           const left = Math.random() * 100;
           const duration = Math.random() * 8 + 6;
           const delay = Math.random() * -15;
-          
           particle.style.left = `${left}%`;
           particle.style.animation = `fall ${duration}s linear infinite`;
           particle.style.animationDelay = `${delay}s`;
-          
           return particle;
         }
 
@@ -477,7 +483,6 @@
         }
       }
 
-      // Параллакс
       const card = document.getElementById('parallaxCard');
       if (card) {
         const handleMouseMove = (e) => {
@@ -497,26 +502,21 @@
         card.addEventListener('mouseleave', handleMouseLeave);
       }
 
-      // ИСПРАВЛЕНИЕ БАГА С "ЗАЛИПШИМ" ACTIVE ПРИ ПЕРЕТАСКИВАНИИ
       const interactiveElements = document.querySelectorAll('.social-item, .github-btn');
-      
       function removePressedState(e) {
         const el = e?.target?.closest?.('.social-item, .github-btn');
         if (el) {
           el.classList.remove('active-pressed');
         } else {
-          // Убираем у всех на всякий случай
           document.querySelectorAll('.social-item, .github-btn').forEach(btn => {
             btn.classList.remove('active-pressed');
           });
         }
       }
-      
       function addPressedState(e) {
         const el = e.target.closest('.social-item, .github-btn');
         if (el) {
           el.classList.add('active-pressed');
-          // Добавляем глобальные обработчики для отпускания мыши где угодно и выхода за пределы
           const cleanup = () => {
             el.classList.remove('active-pressed');
             document.removeEventListener('mouseup', cleanup);
@@ -534,14 +534,10 @@
           el.addEventListener('mouseleave', onMouseLeave);
         }
       }
-      
       interactiveElements.forEach(el => {
-        // Отключаем стандартный :active стиль, управляем через класс
         el.addEventListener('mousedown', addPressedState);
-        // Также отлавливаем потерю захвата окна (blur) для надёжности
-        window.addEventListener('blur', removePressedState);
       });
-      // Глобальный сброс при клике где угодно (для подстраховки)
+      window.addEventListener('blur', removePressedState);
       document.body.addEventListener('click', removePressedState);
     })();
   </script>
