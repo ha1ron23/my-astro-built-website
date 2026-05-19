@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-# my-astro-built-website
 sources from website https://tuxserver.qzz.io/
 =======
 # Astro Starter Kit: Basics
